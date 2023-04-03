@@ -1,0 +1,76 @@
+<script>
+
+
+
+    $(document).ready(function () {
+
+        const div_id_trans_type = $('#div_id_trans_type')
+        
+
+        var md = new MobileDetect(window.navigator.userAgent);
+        if (md.mobile()) {
+            autosize($('#id_chap_content'));
+        } else {
+            var toolbar = ["bold", "italic"];
+            var simplemde = new SimpleMDE({
+                autofocus: false,
+                spellChecker: false,
+                element: document.getElementById("id_chap_content"),
+                toolbar: toolbar
+            });
+        }
+
+        var id_is_vip = document.querySelector('#id_is_vip');
+        if (id_is_vip) {
+            new Switchery(id_is_vip, {});
+        }
+
+        var trans_type = $('#id_trans_type');
+        var tt = window.sessionStorage.getItem('trans_type');
+        if (tt) {
+            trans_type.val(tt);
+        }
+
+        
+        var btn_save_draft = $('#btn_save_draft');
+        var btn_add = $('#btn_add');
+
+        btn_add.click(function () {
+            window.sessionStorage.setItem('trans_type', trans_type.val());
+            $.showLoader();
+            form.append('<input type=hidden name=add_new value=yes>');
+            form.submit();
+            return false;
+        });
+
+        btn_save_draft.click(function () {
+            var form = $('#id_form');
+            window.sessionStorage.setItem('trans_type', 'D');
+            $.showLoader();
+            form.append('<input type=hidden name=save_draft value=yes>');
+            form.submit();
+            return false;
+        });
+
+    });
+
+let formData = new FormData(); 
+for (i = 0; i < fileupload.files.length; i++) {
+    formData.append("chap_num", 2000);
+    formData.append("chap_title", 'Tên chương');
+    formData.append("trans_type", 'D');
+    formData.append("chap_content", 'Nội dung chương');
+    formData.append("is_vip", 1);
+    formData.append("vip_stones", 30);
+    formData.append("save_draft", 'yes');
+    var form = $('#id_form');
+    window.sessionStorage.setItem('trans_type', 'D');
+    $.showLoader();
+    form.append('<input type=hidden name=save_draft value=yes>');
+    form.submit();
+    await fetch('https://truyenyy.vip/manager/novel/52427/chapter/add/', {
+        method: "POST", 
+        body: formData
+    }); 
+}
+</script>

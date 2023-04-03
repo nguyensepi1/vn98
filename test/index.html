@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+   <form id="form" method="post">
+       <textarea type="text", id="name" placeholder="Name"/></textarea></br>
+       <input type="submit" value="Add"/>
+    </form> 
+    <div>
+    <h3>The Following data is successfuly posted</h3>
+    <textarea id="title"></textarea>
+    </div>
+</body>
+<script>
+var form=document.getElementById('form')
+
+form.addEventListener('submit', function(e){
+ e.preventDefault()
+
+ var name=document.getElementById('name').value
+ formData = new FormData();
+ formData.append('name', name);
+ fetch('process.php', {
+    method: 'POST',
+    body: formData,
+  })
+  .then(function(response){ 
+    return response.text()})
+  .then(function(text)
+  {console.log(text)
+  title=document.getElementById("title")
+  title.innerHTML = text
+}).catch(error => console.error('Error:', error)); 
+});
+</script>
+</html>
